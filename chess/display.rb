@@ -5,15 +5,19 @@ require 'colorize'
 class Display
   attr_reader :cursor
 
+  HIGHLIGHT = :light_green
+  BACKGROUND = :black
+
   def initialize(board)
     @board = board
     @cursor = Cursor.new([0,0], board)
   end
 
   def render
+    system('clear')
     render_column_label
     render_border
-    @board.grid.each_with_index { |row, idx| render_row(row, idx) }
+    @board.grid.each_with_index { |row, idx| render_row(idx) }
     render_border
   end
 
@@ -27,11 +31,17 @@ class Display
     puts border
   end
 
-  def render_row(row, idx)
-    display_arr = row.map { |piece| piece.value }
+  def render_row(idx)
+    display_arr = @board.get_row_values(idx)
     row_string =  " #{idx} | " + display_arr.join("  ") + " | "
     puts row_string
   end
+
+  def move_highlight(old_pos = @cursor.previous_pos, new_pos = @cursor.cursor_pos)
+    @board.highlight_pos(old_pos, BACKGROUND) unless old_pos.nil?
+    @board.highlight_pos(new_pos, HIGHLIGHT)
+  end
+
 end
 
 
@@ -41,5 +51,6 @@ if __FILE__ == $PROGRAM_NAME
   while true
     display.render
     display.cursor.get_input
+    display.move_highlight
   end
 end

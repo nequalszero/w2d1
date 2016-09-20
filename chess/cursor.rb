@@ -32,10 +32,11 @@ MOVES = {
 
 class Cursor
 
-  attr_reader :cursor_pos, :board
+  attr_reader :cursor_pos, :board, :previous_pos
 
   def initialize(cursor_pos, board)
     @cursor_pos = cursor_pos
+    @previous_pos = nil
     @board = board
   end
 
@@ -94,7 +95,10 @@ class Cursor
 
   def update_pos(diff)
     move = add_diff(diff)
-    @cursor_pos = move if @board.in_bounds?(move)
+    if @board.in_bounds?(move)
+      @previous_pos = @cursor_pos
+      @cursor_pos = move
+    end
   end
 
   def add_diff(diff)

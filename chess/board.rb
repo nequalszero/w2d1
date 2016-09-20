@@ -1,4 +1,5 @@
 require_relative 'piece'
+require 'colorize'
 
 class NoPieceFoundError < StandardError
   def initialize(pos)
@@ -42,6 +43,14 @@ class Board
 
   def in_bounds?(pos)
     pos.all? {|coord| coord.between?(0, @size-1)}
+  end
+
+  def get_row_values(idx)
+    @grid[idx].map{|piece| piece.value}
+  end
+
+  def highlight_pos(pos, bg_color)
+    self[pos].change_background(bg_color)
   end
 
 end
