@@ -38,8 +38,8 @@ class Display
   end
 
   def move_highlight(old_pos = @cursor.previous_pos, new_pos = @cursor.cursor_pos)
-    @board.highlight_pos(old_pos, BACKGROUND) unless old_pos.nil?
     @board.highlight_pos(new_pos, HIGHLIGHT)
+    @board.highlight_pos(old_pos, BACKGROUND) unless old_pos.nil?
   end
 
 end

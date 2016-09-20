@@ -18,7 +18,7 @@ class Board
 
   def initialize
     @size = 8
-    @grid = Array.new(@size) {Array.new(@size) {Piece.new}}
+    @grid = Array.new(@size) {Array.new(@size) {Piece.new(:white,self,[0,0])}}
   end
 
   def [](pos)
@@ -46,7 +46,7 @@ class Board
   end
 
   def get_row_values(idx)
-    @grid[idx].map{|piece| piece.value}
+    @grid[idx].map{|piece| piece.symbol}
   end
 
   def highlight_pos(pos, bg_color)
