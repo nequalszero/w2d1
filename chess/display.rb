@@ -21,6 +21,17 @@ class Display
     render_border
   end
 
+  def get_cursor_input (message)
+    while true
+      system('clear')
+      render
+      puts message
+      position = @cursor.get_input
+      move_highlight
+      return position if position.is_a?(Array)
+    end
+  end
+
   def render_column_label
     column_label =  "     " + (0..@board.size - 1).to_a.join("  ") + "   "
     puts column_label
@@ -44,13 +55,18 @@ class Display
 
 end
 
-
 if __FILE__ == $PROGRAM_NAME
-  new_board = Board.new
-  display = Display.new(new_board)
-  while true
-    display.render
-    display.cursor.get_input
-    display.move_highlight
-  end
+  board = Board.new
+  board.debug_place([0,4], :black, King)
+  board.debug_place([1,3], :black, Pawn)
+  board.debug_place([1,5], :black, Pawn)
+  board.debug_place([0,3], :black, Pawn)
+  board.debug_place([0,5], :black, Pawn)
+  board.debug_place([2,4], :white, Rook)
+  board.debug_place([3,1], :white, Bishop)
+  board.debug_place([3,7], :white, Bishop)
+  display = Display.new(board)
+  display.render
+  puts board.in_check?(:black)
+  puts board.check_mate?(:black)
 end
